@@ -232,7 +232,7 @@
         dehydrateTimer = clearInterval(dehydrateTimer);
 
         // Send score
-        sendScore(playerName, Math.floor(score));
+        sendScoreJSON(playerName, Math.floor(score));
         
         // 'Game over' message + link to scores table
         let goDiv = document.getElementById('gameover');
@@ -416,7 +416,7 @@
       obj.player = name;
       obj.score = data;
 
-      console.log('Sending to "http://127.0.0.1:3000/setScore" :' + JSON.stringify(obj)
+      console.log('Sending to "http://127.0.0.1:3000/setScore" :' + JSON.stringify(obj));
       fetch('http://127.0.0.1:3000/setScore', {
           method: "POST",
           mode: "same-origin",
