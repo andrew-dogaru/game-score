@@ -1,9 +1,12 @@
 # Mac
 .DS_Store
 
+# Eclipse
+.settings/
+.project
+
 # node.js, npm
 node_modules/
 
-# project
+# data file
 scores.txt
-
