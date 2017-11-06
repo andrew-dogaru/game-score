@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Get/Set scores</title>
+</head>
+<body>
+   <h3>Test sending the score</h3> 
+   <div class="setScore">
+    <form action="http://127.0.0.1:3000/setScore" method="get" name="setScore">
+      <label>Set the player's score using GET:</label><br>
+      <input type="text" name="player" placeholder="Enter the player's name"/><br>
+      <input type="text" name="score" placeholder="Enter the score"/><br>
+      <input class="submit_button" type="submit" value="Go"/>
+    </form>
+   </div>
+
+   <div class="setScore">
+    <form id="fetchSetScore">
+      <label>Set the player's score using POST and JSON:</label><br>
+      <input type="text" name="player" placeholder="Enter the player's name"/><br>
+      <input type="text" name="score" placeholder="Enter the score"/><br>
+      <input class="submit_button" value="Go" type="button" onclick="sendScoreJSON();"/>
+    </form>
+   </div>
+   
+   <div class="getScore">
+    <form action="http://127.0.0.1:3000/getScore" method="get" name="getScore">
+      <label>Get scores:</label><br>
+      <input type="text" name="count" placeholder="Entry count"/><br>
+      <div id="scores"> </div>
+      <input class="submit_button" type="submit" value="Go"/>
+    </form> 
+   </div>
+
+  <script type="text/javascript">
+    function submitscore() {
+      var form = document.getElementById('fetchSetScore');
+      var request = new Request('http://127.0.0.1:3000/setScore?' + 
+          'player=' + form.player.value + '&score=' + form.score.value,
+          { method: 'GET' });
+
+      fetch(request).then(
+        function(response) {
+          console.log(response.headers.get('Content-Type'));
+          console.log(response.headers.get('Date'));
+          console.log(response.status);
+          console.log(response.statusText);
+          console.log(response.type);
+          console.log(response.url);
+        }).catch(function(err) {
+          console.log("Error: " + err.message);
+        });
+    }
+    
+    function sendScoreJSON() {
+      var form = document.getElementById('fetchSetScore');
+      var obj = new Object();
+      obj.player = form.player.value;
+      obj.score = form.score.value;
+
+      fetch('http://127.0.0.1:3000/setScore', {
+          method: "POST",
+          mode: "same-origin",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(obj)
+        }).then(
+        function(response) {
+          console.log(response.headers.get('Content-Type'));
+          console.log(response.headers.get('Date'));
+          console.log(response.status);
+          console.log(response.statusText);
+          console.log(response.type);
+          console.log(response.url);
+        }).catch(function(err) {
+          console.log("Error: " + err.message);
+        });
+    }
+
+  </script>
+</body>
+</html>
