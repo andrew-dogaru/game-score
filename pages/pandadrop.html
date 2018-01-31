@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <title>Panda drops</title>
   <style type='text/css'>
     body {
       margin: 0;
@@ -22,7 +23,7 @@
     }
 
     div#panda {
-      background: url('img/walking_panda-8-right.png');
+      background: url('/img/walking_panda-8-right.png');
       background-repeat: no-repeat;
       height: 160px;
       width: 95px;
@@ -31,20 +32,20 @@
     }
 
     div#panda.left {
-      background: url('img/walking_panda-8-left.png');
+      background: url('/img/walking_panda-8-left.png');
       background-repeat: no-repeat;
       animation: walk-west 1.2s steps(8) infinite;
     }
 
     div#panda.right {
-      background: url('img/walking_panda-8-right.png');
+      background: url('/img/walking_panda-8-right.png');
       background-repeat: no-repeat;
       animation: walk-east 1.2s steps(8) infinite;
     }
 
     div.cloud {
       display: none;
-      background: url('img/clouds-2.png');
+      background: url('/img/clouds-2.png');
       background-repeat: no-repeat;
       background-size: 100%;
       position: absolute;
@@ -55,7 +56,7 @@
 
     div.catchme {
       display: none;
-      background: url('img/newborn.png');
+      background: url('/img/newborn.png');
       background-repeat: no-repeat;
       background-size: contain;
       position: absolute;
@@ -74,7 +75,7 @@
       writing-mode: tb-rl;
       text-align: center;
       font-size: 18pt;
-      background: url('img/water.jpeg');
+      background: url('/img/water.jpeg');
       background-repeat: no-repeat;
       background-position: bottom center;
       background-size: 100% 40%;
@@ -123,13 +124,14 @@
       }
     }
   </style>
+  <script type="text/javascript" src="/simplescript.js" charset="utf-8"></script>
 </head>
 
 <body>
 
   <div id='board'>
     <div id='ground'>
-      <img src='img/ground_tile.png' />
+      <img src='/img/ground_tile.png' />
     </div>
 
     <div id='panda'>
@@ -155,7 +157,11 @@
   <div id='gameover'></div>
 
   <script type='text/javascript'>
-    let playerName = '';
+    let basePath = '${0}';
+    let playerName = '${1}';
+    let getScoreUrl = basePath + '/getscore?count=5';
+    let setScoreUrl = basePath + '/setscore';
+
     let score = 0;
     let hydration = 60;
     let dehydration = 1.0; // original value 0.5;
@@ -207,7 +213,6 @@
         }
       });
 
-      playerName = getPlayerName();
       gameAnimator = setInterval(doTurn, 33);
       dehydrateTimer = setInterval(dehydrate, 150);
     }
@@ -237,8 +242,9 @@
         // 'Game over' message + link to scores table
         let goDiv = document.getElementById('gameover');
         goDiv.innerHTML = 
-            'Hey ' + playerName + ', Panda Has Died! Oh Noes!!!<br>' +
-            '<a href="/getScore?count=5">Get top 5 scores</a>';
+            'Hey ' + playerName + ', Panda Has Died! Oh Noes!!!<br><a href="' + 
+            getScoreUrl + '&' + getStoredQueryParams() + '">Get top 5 scores</a>' + 
+            '&nbsp;&nbsp;&nbsp; <a href="#" onClick="gotoStart()">Play again</a>';
         goDiv.style.display = 'block';
 
         // Stop the panda!
@@ -251,10 +257,15 @@
       hydrationDiv.style.backgroundSize = '100% ' + hydration + '%';
     }
 
+    function gotoStart() {
+      window.location.href = '/game/start?' + getStoredQueryParams();
+    }
+
     function getRandomInt(min, max) {
       min = Math.ceil(min);
       max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+      //The maximum is exclusive and the minimum is inclusive
+      return Math.floor(Math.random() * (max - min)) + min; 
     }
 
     function addClouds() {
@@ -384,25 +395,11 @@
       panda.style.left = pandaX + 'px';
     }
 
-    function getPlayerName() {
-      var name = new String();
-      do {
-        name = prompt('Enter your name : ', '');
-        name = name.trim();
-        if (name.length == 0) {
-          alert("Cannot accept empty player names!");
-        }
-      } while(name.length == 0);
-      console.log('Player name: "' + name + '"');
-      return name.valueOf();
-    }
-
     function sendScore(name, data) {
-      var request = new Request('http://127.0.0.1:3000/setScore?' + 
-          'player=' + name + '&score=' + data,
-          { method: 'GET' });
+      var fullUrl = setScoreUrl + '?player=' + name + '&score=' + data;
+      var request = new Request(fullUrl, { method: 'GET' });
 
-      console.log('Sending to "http://127.0.0.1:3000/setScore" :' + 'player=' + name + '&score=' + data);
+      console.log('Sending score to ' + fullUrl);
       fetch(request).then(
         function(response) {
           console.log(response.statusText);
@@ -412,16 +409,19 @@
     }
     
     function sendScoreJSON(name, data) {
+      var fullUrl = setScoreUrl;
       var obj = new Object();
       obj.player = name;
       obj.score = data;
 
-      console.log('Sending to "http://127.0.0.1:3000/setScore" :' + JSON.stringify(obj));
-      fetch('http://127.0.0.1:3000/setScore', {
+      console.log('Sending score to ' + fullUrl + ' : ' + JSON.stringify(obj));
+      fetch(fullUrl, {
           method: "POST",
           mode: "same-origin",
           credentials: "same-origin",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "x-access-token": window.localStorage.getItem('token')},
           body: JSON.stringify(obj)
         }).then(
         function(response) {

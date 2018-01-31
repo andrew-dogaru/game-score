@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>Show top scores</title>
+  <link href="/simple.css" type="text/css" rel="stylesheet"/>
+  <script type="text/javascript" src="/simplescript.js" charset="utf-8"></script>
+</head>
+<body>
+  <div id="header" >
+    <div id="title">Panda Drops: Top Scores</div>
+    <div id="bar">
+      <div id="left">&nbsp;</div>
+      <div id="barcenter">&nbsp;</div>
+      <div id="right">&nbsp;</div>
+    </div>
+  </div>
+  <div id="main">
+    <table class="scores">
+      <tr><th>Name</th><th>Score</th></tr>
+      <!-- scores inserted here -->
+      ${0}
+    </table>
+  </div>
+
+  <hr>
+
+  <p><a href="#" onClick="window.location.href = '/game/start?' + getStoredQueryParams()">Play again</a>
+  &nbsp; <a href="/apikey" onClick="removeStorage()">Logout</a></p>
+
+</body>
+</html>
