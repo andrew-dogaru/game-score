@@ -1,0 +1,43 @@
+<html>
+<head>
+  <title>Sign up</title>
+  <link rel="stylesheet" href="/simple.css"/>
+  <script type="text/javascript" src="/simplescript.js" charset="utf-8"></script>
+  <style>
+    body { padding-top: 80px; }
+  </style>
+</head>
+<body>
+  <div id="header" >
+    <div id="title">Panda Drops: Sign Up</div>
+    <div id="bar">
+      <div id="left">&nbsp;</div>
+      <div id="barcenter">&nbsp;</div>
+      <div id="right">&nbsp;</div>
+    </div>
+  </div>
+
+  <div id="main">
+    <form id="signupForm">
+      <div class="form-group">
+        <label>Name</label>&nbsp;&nbsp; <input type="text" class="form-control" name="userid">
+      </div>
+      <div class="form-group">
+        <label>Password</label>&nbsp;&nbsp; <input type="password" class="form-control" name="password">
+      </div>
+      <p> </p>
+      <input class="submit_button" value="Signup" type="button" 
+          onclick='submitFormJSON("signupForm", {
+            submitUrl: "/signup",
+            successUrl: "/apikey",
+            errorUrl: "/"
+          });'/>
+    </form>
+  </div>
+
+  <hr>
+
+  <p>Already have an account? <a href="/apikey">Login</a></p>
+
+</body>
+</html>

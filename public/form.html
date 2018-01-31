@@ -7,7 +7,7 @@
 <body>
    <h3>Test sending the score</h3> 
    <div class="setScore">
-    <form action="http://127.0.0.1:3000/setScore" method="get" name="setScore">
+    <form action="http://127.0.0.1:3000/setscore" method="get" name="setScore">
       <label>Set the player's score using GET:</label><br>
       <input type="text" name="player" placeholder="Enter the player's name"/><br>
       <input type="text" name="score" placeholder="Enter the score"/><br>
@@ -25,7 +25,7 @@
    </div>
    
    <div class="getScore">
-    <form action="http://127.0.0.1:3000/getScore" method="get" name="getScore">
+    <form action="http://127.0.0.1:3000/getscore" method="get" name="getScore">
       <label>Get scores:</label><br>
       <input type="text" name="count" placeholder="Entry count"/><br>
       <div id="scores"> </div>
@@ -36,7 +36,7 @@
   <script type="text/javascript">
     function submitscore() {
       var form = document.getElementById('fetchSetScore');
-      var request = new Request('http://127.0.0.1:3000/setScore?' + 
+      var request = new Request('http://127.0.0.1:3000/setscore?' + 
           'player=' + form.player.value + '&score=' + form.score.value,
           { method: 'GET' });
 
@@ -59,7 +59,7 @@
       obj.player = form.player.value;
       obj.score = form.score.value;
 
-      fetch('http://127.0.0.1:3000/setScore', {
+      fetch('http://127.0.0.1:3000/setscore', {
           method: "POST",
           mode: "same-origin",
           credentials: "same-origin",

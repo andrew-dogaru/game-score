@@ -5,7 +5,11 @@
 .settings/
 .project
 
-# node.js, npm
+# Logs
+logs
+*.log
+
+# Dependency directory: node.js, npm
 node_modules/
 
 # data file

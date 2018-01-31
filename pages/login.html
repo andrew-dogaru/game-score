@@ -1,0 +1,43 @@
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="/simple.css"/>
+  <script type="text/javascript" src="/simplescript.js" charset="utf-8"></script>
+  <style>
+    body { padding-top: 80px; }
+  </style>
+</head>
+<body>
+  <div id="header" >
+    <div id="title">Panda Drops: Login</div>
+    <div id="bar">
+      <div id="left">&nbsp;</div>
+      <div id="barcenter">&nbsp;</div>
+      <div id="right">&nbsp;</div>
+    </div>
+  </div>
+
+  <div id="main">
+    <form id="loginForm">
+      <div>
+        <label>Name</label>&nbsp;&nbsp; <input type="text" name="userid">
+      </div>
+      <div>
+        <label>Password</label>&nbsp;&nbsp; <input type="password" name="password">
+      </div>
+      <p> </p>
+      <input class="submit_button" value="Login" type="button" 
+          onclick="submitFormJSON('loginForm', {
+            submitUrl: '/apikey',
+            successUrl: '/game/start',
+            errorUrl: '/'
+          });"/>
+    </form>
+  </div>
+
+  <hr>
+
+  <p>Need an account? <a href="/signup">Signup</a></p>
+
+</body>
+</html>
